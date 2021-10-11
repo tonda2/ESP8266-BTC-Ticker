@@ -1,4 +1,5 @@
 #include <ESP8266WiFi.h>
+#include <WiFiManager.h>
 #include <ArduinoJson.h>
 #include <SPI.h>
 #include <Wire.h>
@@ -10,9 +11,6 @@
 
 #define OLED_RESET     16 // Reset pin # (or -1 if sharing Arduino reset pin)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-
-const char* ssid     = "ssid";
-const char* password = "passw";
 
 // API server
 const char* host = "api.coindesk.com";
@@ -45,19 +43,34 @@ const unsigned char logo_bmp [] PROGMEM={
 
 void setup() {
   Serial.begin(115200);
-  WiFi.begin(ssid, password);
-  
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
+  WiFi.mode(WIFI_STA);
+  WiFiManager wm;
+  //wm.resetSettings();  //uncomment to delete stored credentials for testing purposes
 
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
+
+  bool res;
+  res = wm.autoConnect("BTC Ticker","btctothemoon"); // create password protected ap
+
+  
+    if(!res) {
+        Serial.println("Failed to connect");
+        // ESP.restart();
+    } 
+    else {
+        //if you get here you have connected to the WiFi    
+        Serial.println("connected...yeey :)");
+    }
+  
   display.display();
   display.clearDisplay();
+  display.setTextSize(1); 
+  display.setTextColor(SSD1306_WHITE);        // Draw white text
+  display.setCursor(0,0);  
+  display.println("To setup WiFi");
   delay(10);
 }
 
