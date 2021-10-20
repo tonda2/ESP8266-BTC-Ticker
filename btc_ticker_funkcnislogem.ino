@@ -18,27 +18,16 @@ const char* host = "api.coindesk.com";
 #define LOGO_HEIGHT   19
 #define LOGO_WIDTH    16
 
-const unsigned char logo_bmp [] PROGMEM={
-  B00000000, B00000000,
-  B00001101, B10000000,
-  B00001101, B10000000,
-  B01111111, B11100000,
-  B01111111, B11110000,
-  B00011000, B01111000,
-  B00011000, B00111000,
-  B00011000, B00111000,
-  B00011000, B01110000,
-  B00011111, B11110000,
-  B00011000, B01111000,
-  B00011000, B00111000,
-  B00011000, B00111000,
-  B00011000, B01111000,
-  B01111111, B11110000,
-  B01111111, B11000000,
-  B00011011, B00000000, 
-  B00011011, B00000000,
-  B00000000, B00000000,
-  B00000000, B00000000
+
+const unsigned char logo [] PROGMEM = {
+0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xa0, 0x00, 0x00, 0x01, 0xb0, 0x00, 
+  0x00, 0x1f, 0x30, 0x00, 0x00, 0x1f, 0xf0, 0x00, 0x00, 0x07, 0xf8, 0x00, 0x00, 0x07, 0x3e, 0x00, 
+  0x00, 0x0f, 0x1e, 0x00, 0x00, 0x0e, 0x0e, 0x00, 0x00, 0x0e, 0x1e, 0x00, 0x00, 0x0f, 0xfc, 0x00, 
+  0x00, 0x1e, 0xf8, 0x00, 0x00, 0x1c, 0x3c, 0x00, 0x00, 0x1c, 0x1e, 0x00, 0x00, 0xfc, 0x1e, 0x00, 
+  0x00, 0xff, 0x3c, 0x00, 0x00, 0x1f, 0xfc, 0x00, 0x00, 0x1b, 0xf8, 0x00, 0x00, 0x1b, 0x00, 0x00, 
+  0x00, 0x13, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
   };
 
 void setup() {
@@ -52,6 +41,12 @@ void setup() {
     for(;;); // Don't proceed, loop forever
   }
 
+  display.clearDisplay();                                                     //Clear the display
+  display.setTextColor(SSD1306_WHITE);                                      //Set the text colour to white
+  display.drawBitmap(48, 0, logo, 32, 32, WHITE);                             //Display bitmap from array
+  display.display();
+  delay(2000); 
+
   bool res;
   res = wm.autoConnect("BTC Ticker","btctothemoon"); // create password protected ap
 
@@ -64,14 +59,6 @@ void setup() {
         //if you get here you have connected to the WiFi    
         Serial.println("connected...yeey :)");
     }
-  
-  display.display();
-  display.clearDisplay();
-  display.setTextSize(1); 
-  display.setTextColor(SSD1306_WHITE);        // Draw white text
-  display.setCursor(0,0);  
-  display.println("To setup WiFi");
-  delay(10);
 }
 
 void loop() {
@@ -149,7 +136,7 @@ void loop() {
   display.setCursor(0,0);             // Start at top-left corner
   display.println(F("Cena BTC je:"));
 
-  display.drawBitmap(98,6,logo_bmp, LOGO_WIDTH, LOGO_HEIGHT, 1);
+  display.drawBitmap(98, 0, logo, 32, 32, WHITE); 
   display.display();
 
   display.setCursor(0,16); 
