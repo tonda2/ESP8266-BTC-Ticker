@@ -36,14 +36,11 @@ void setup() {
     for(;;);
   }
 
-
   display_logo(48,0);
   
-
   bool res;
   res = wm.autoConnect("BTC Ticker","btctothemoon"); // create password protected ap
 
-  
     if(!res) {
         Serial.println("Failed to connect");
         // ESP.restart();
@@ -56,7 +53,17 @@ void setup() {
 
 void loop() {  
   int price = get_price();
-  display_price(price);
+  int tmp;
+  if(price != 0){
+    display_price(price);
+    tmp = price;
+  }
+
+  else{
+    display_price(tmp);
+  }
+  
+  delay(5000);
 }
 
 int display_logo(int x, int y){
@@ -128,5 +135,4 @@ int display_price(int input){
   display.setCursor(12,16);
   display.print(input);
   display.display();
-  delay(5000);
 }
