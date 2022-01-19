@@ -45,9 +45,28 @@ void setup() {
       Serial.println("Failed to connect");
       // ESP.restart();
   }
+}
 
-  else{
-    display_price(tmp);
+void loop() {
+  int price_old = 0, price;
+
+  while (1){
+    price = get_price();
+    /*Serial.print("Old: ");
+    Serial.println(price_old);*/
+    
+    if (price){
+      price_old = price;
+    }
+    else{
+      //Serial.println("Here");
+      price = price_old;
+    }
+
+    /*Serial.print("New: ");
+    Serial.println(price);*/
+    display_price(price);
+    delay(10000);
   }
 }
 
