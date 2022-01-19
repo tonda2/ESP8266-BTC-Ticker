@@ -13,5 +13,4 @@ The <a href="https://coindesk.com/price/bitcoin"> CoinDesk </a> API is used to g
 /----CURRENT TO-DO LIST----\
 
 1. Model and 3D print an enclosure for the device.
-2. Show instructions on screen when setting up WiFi.
-3. Add OTA update functionality.
+2. <del>Show instructions on screen when setting up WiFi.</del> Done
