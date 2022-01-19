@@ -29,7 +29,7 @@ void setup() {
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
   WiFiManager wm;
-  //wm.resetSettings();  //uncomment to delete stored credentials for testing purposes
+  //wm.resetSettings();  //deletes stored credentials for testing purposes
 
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println(F("SSD1306 allocation failed"));
@@ -39,31 +39,16 @@ void setup() {
   display_logo(48,0);
   
   bool res;
-  res = wm.autoConnect("BTC Ticker","btctothemoon"); // create password protected ap
+  res = wm.autoConnect("BTC Ticker","btctothemoon"); // create password protected AP
 
-    if(!res) {
-        Serial.println("Failed to connect");
-        // ESP.restart();
-    } 
-    else {
-        //if you get here you have connected to the WiFi    
-        Serial.println("connected...yeey :)");
-    }
-}
-
-void loop() {  
-  int price = get_price();
-  int tmp;
-  if(price != 0){
-    display_price(price);
-    tmp = price;
+  if(!res) {
+      Serial.println("Failed to connect");
+      // ESP.restart();
   }
 
   else{
     display_price(tmp);
   }
-  
-  delay(5000);
 }
 
 int display_logo(int x, int y){
@@ -115,6 +100,7 @@ int get_price(){
   String priceString = jsonAnswer.substring(rateIndex + 12, rateIndex + 18);
   priceString.trim();
   int price = priceString.toInt();
+  
   return price;
 }
 
@@ -123,7 +109,8 @@ int display_price(int input){
   display.setTextSize(1); 
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(0,0);
-  display.println(F("Cena BTC je:"));
+  //display.println(F("Cena BTC je:")); //Czech
+  display.println(F("BTC price:"));
 
   display.drawBitmap(98, 0, logo, 32, 32, WHITE); 
   display.display();
