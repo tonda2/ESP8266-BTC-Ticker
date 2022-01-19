@@ -36,8 +36,9 @@ void setup() {
     for(;;);
   }
 
+  display.clearDisplay();
   display_logo(48,0);
-  
+  wm.setAPCallback(configModeCallback);
   bool res;
   res = wm.autoConnect("BTC Ticker","btctothemoon"); // create password protected AP
 
@@ -49,25 +50,35 @@ void setup() {
 
 void loop() {
   int price_old = 0, price;
-
+  
+  while (get_price() == 0){}
+  
   while (1){
     price = get_price();
-    /*Serial.print("Old: ");
-    Serial.println(price_old);*/
     
     if (price){
       price_old = price;
     }
     else{
-      //Serial.println("Here");
       price = price_old;
     }
 
-    /*Serial.print("New: ");
-    Serial.println(price);*/
     display_price(price);
     delay(10000);
   }
+}
+
+void configModeCallback (WiFiManager *myWiFiManager) {
+  display.setTextSize(1); 
+  display.setTextColor(SSD1306_WHITE);
+  display.clearDisplay();
+  display.setCursor(20,4);
+  display.println(F("SSID: BTC Ticker"));
+  display.setCursor(8,13);
+  display.println(F("Psswd: btctothemoon"));
+  display.setCursor(5,22);
+  display.println(F("Click configure WiFi"));
+  display.display();
 }
 
 int display_logo(int x, int y){
@@ -75,7 +86,7 @@ int display_logo(int x, int y){
   display.setTextColor(SSD1306_WHITE);
   display.drawBitmap(x, y, logo, 32, 32, WHITE);
   display.display();
-  delay(2000);  
+  delay(20);  
 }
 
 int get_price(){
@@ -128,7 +139,6 @@ int display_price(int input){
   display.setTextSize(1); 
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(0,0);
-  //display.println(F("Cena BTC je:")); //Czech
   display.println(F("BTC price:"));
 
   display.drawBitmap(98, 0, logo, 32, 32, WHITE); 
