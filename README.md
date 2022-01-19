@@ -1,5 +1,7 @@
 # ESP8266 BTC Ticker
 
+![device.jpg](https://github.com/tonda2/ESP8266-BTC-Ticker/blob/main/images/device.jpg)
+
 This is a simple device to display the current BTC price. It is made for the TTGO ESP8266 0.91" OLED board but should run on any ESP with an OLED (not tested).
 
 The code is fairly simple. It uses an Adafruit library to run the screen and the WiFiManager library for easy network setup.
